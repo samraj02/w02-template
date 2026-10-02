@@ -1,12 +1,12 @@
 package edu.northeastern.shelter;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.LocalDate;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -114,5 +114,30 @@ class AnimalTest {
     assertTrue(
         blankName.getMessage().toLowerCase().contains("name"),
         "the message should name the offending argument");
+  }
+
+  @Test 
+  @Tag ("current")
+  void aNullSpeciesIsRefused1() {
+    IntakeException thrown =
+        assertThrows(
+            IntakeException.class, () -> new Animal("Rex", null, AgeMonths.of(1), INTAKE));
+    assertTrue(thrown.getMessage().toLowerCase().contains("species"));
+  }
+
+  @Test 
+  @Tag ("current")
+  void aNullAgeIsRefused1() {
+    IntakeException thrown = assertThrows(IntakeException.class, () -> new Animal("Rex", Species.DOG, null, INTAKE));
+    assertTrue(thrown.getMessage().toLowerCase().contains("age"));
+  }
+
+  @Test
+  @Tag ("current")
+  void aNullIntakeDateIsRefused1() {
+    IntakeException thrown =
+        assertThrows(
+            IntakeException.class, () -> new Animal("Rex", Species.DOG, AgeMonths.of(1), null));
+    assertTrue(thrown.getMessage().toLowerCase().contains("intake date"));
   }
 }

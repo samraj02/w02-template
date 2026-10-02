@@ -68,7 +68,7 @@ public final class AgeMonths {
    * @return the number of complete years, never negative
    */
   public int years() {
-    throw new UnsupportedOperationException("TODO: implement years()");
+    return months / 12;
   }
 
   /**
@@ -79,7 +79,7 @@ public final class AgeMonths {
    * @return a value in the range 0 to 11 inclusive
    */
   public int remainderMonths() {
-    throw new UnsupportedOperationException("TODO: implement remainderMonths()");
+    return months % 12;
   }
 
   /**
@@ -88,7 +88,7 @@ public final class AgeMonths {
    * @return {@code true} if this age is less than twelve months
    */
   public boolean isUnderOneYear() {
-    throw new UnsupportedOperationException("TODO: implement isUnderOneYear()");
+    return months < 12;
   }
 
   /**
@@ -114,6 +114,38 @@ public final class AgeMonths {
    */
   @Override
   public String toString() {
-    throw new UnsupportedOperationException("TODO: implement toString()");
+    int years = years();
+    int remainingMonths = remainderMonths();
+
+    String yearsString;
+    String monthsString;
+
+      yearsString = switch (years) {
+        case 0 -> {
+          monthsString = switch (remainingMonths) {
+            case 0 -> "0 months";
+            case 1 -> remainingMonths + " month";
+            default -> remainingMonths + " months";
+          };
+          yield "";
+        }
+        case 1 -> {
+          monthsString = switch (remainingMonths) {
+            case 0 -> "";
+            case 1 -> ", 1 month";
+            default -> ", " + remainingMonths + " months";
+          };
+          yield "1 year";
+        }
+        default -> {
+          monthsString = switch (remainingMonths) {
+            case 0 -> "";
+            case 1 -> ", 1 month";
+            default -> ", " + remainingMonths + " months";
+          };
+          yield years + " years";
+        }
+      };
+    return yearsString + monthsString;
   }
 }
